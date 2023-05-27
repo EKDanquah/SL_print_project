@@ -20,6 +20,5 @@ export type PendingDataListingType = "HOME" | "LAND" | "STAY" | "CARS";
 
 export type PendingDataType = {
     pendingListingType?: PendingDataListingType,
-    uid?: string,
-    // ListedForType?: ListedForType
+    uid?: string, 
 }

@@ -1,34 +1,38 @@
 import * as Yup from 'yup';
-import { RegionType, SexType } from './schema';
+import { PrintColor } from './schema';
 
-const UserYupSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is not valid'),
-    name: Yup.string().required('Name is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    location: Yup.object({
-        region: Yup.mixed<RegionType>().oneOf<RegionType>(["Eastern Province",
-            "Northern Province",
-            "Southern Province",
-            "North West Province"]),
-        town: Yup.string().required('town is required'),
-        street: Yup.string().required('Street is required'),
-        streetNO: Yup.number().required('Street number is required'),
-        sex: Yup.mixed<SexType>().oneOf<SexType>(["MALE", "FEMALE"]),
-    })
+const PrintYupSchema = Yup.object().shape({
+    title: Yup.string().required('Invalid title'),
+    instruction: Yup.string(),
+    printFiles: Yup.array().of(Yup.string().required('Minimum of one file is required')).min(1).required('Minimum of one file is required'),
+
+    printFileSizes: Yup.array().of(Yup.string()).min(1).required('Minimum of one file size is required'),
+    quantity: Yup.string().required('Please enter the amount of files to print'),
+    printFileType: Yup.array().of(Yup.string()).min(1).required('Minimum of one file type is required'),
+    printColor: Yup.mixed<PrintColor>().oneOf<PrintColor>(['black and white', 'coloured']),
+    deadLine: Yup.date().required('Due date mus be set').nullable()
+});
+
+const MinistryYupSchema = Yup.object().shape({
+    name: Yup.string().required('Invalid ministry name'),
+    email: Yup.string().required('Invalid email address'),
+    phoneNumber: Yup.string().required('invalid phone number'),
+    printFile:  Yup.mixed().nullable().required('Ministry image is required'),
+
 });
 
 
-const PrintJobsTicket = Yup.object().shape({
-    rafflePromoName: Yup.string().required('Promo Name is not valid'),
-    startDate: Yup.string().required("Start Date is Required"),
-    minimumEligiblePrintJobsCount: Yup.number().moreThan(0).required('Eligibility print-jobs amount is required'),
-    raffles: Yup.array().of(Yup.object().shape({
-        imageUrl: Yup.string().required('Image Url is not valid'),
-        name: Yup.string().required('Name is required'),
-        details: Yup.string().required('Details is required'),
-    }),).min(1).required("Minimum of one item is required")
+const MinistryUserYupSchema = Yup.object().shape({
+    firstName: Yup.string().required('Invalid user first name'),
+    lastName: Yup.string().required('Invalid user last name'),
+    email: Yup.string().required('Invalid user email address'),
+    phoneNumber: Yup.string().required('invalid user phone number'),
+    // printFile:  Yup.mixed().nullable().required('Ministry image is required'),
+
+});
+const DepartmentYupSchema = Yup.object().shape({
+    title: Yup.string().required('Invalid title'),
+    
 });
 
-
-
-export { UserYupSchema, PrintJobsTicket };
+export { PrintYupSchema,MinistryYupSchema ,DepartmentYupSchema,MinistryUserYupSchema};

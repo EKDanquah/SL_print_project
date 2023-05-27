@@ -11,12 +11,12 @@ const icons = {
 
 
 const pages = {
-    id: 'agent',
-    title: 'Users & Print Jobs',
+    id: 'prints',
+    title: 'Print Request',
     type: 'group',
     children: [
         {
-            id: 'print-jobs',
+            id: 'print jobs',
             title: 'Print Jobs',
             type: 'item',
             url: '/print-jobs',
@@ -24,29 +24,14 @@ const pages = {
             target: true
         },
         {
-            id: 'pending-admin',
-            title: 'Pending admin',
+            id: 'institutions',
+            title: 'User And Group',
             type: 'item',
-            url: '/pending-admin',
+            
+            url: '/institutions',
             icon: icons.UserOutlined,
             target: true
         },
-        {
-            id: 'agent',
-            title: 'Agents',
-            type: 'item',
-            url: '/agents',
-            icon: icons.UserOutlined,
-            target: true
-        },
-        {
-            id: 'consumer',
-            title: 'Consumers',
-            type: 'item',
-            url: '/consumers',
-            icon: icons.GroupOutlined,
-            target: true
-        }
     ]
 };
 

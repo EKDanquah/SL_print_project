@@ -6,7 +6,7 @@ import { Box, Checkbox, Stack, Table, TableBody, TableCell, TableContainer, Tabl
 
 // third-party
 import { SearchContext } from '../../pages/agent/searchContext';
-import { AgentType, CustomerType, FeedbackType, PrintJobsType } from '../../schema/schema';
+import { PrintType, InstitutionType, InstitutionUsersType } from '../../schema/schema';
 import { TableDataType } from '../types';
 import TableHeader, { TaleHeadLabelsType, TaleHeadLabelType } from './tableHeader';
 
@@ -39,16 +39,15 @@ function descendingComparator(a: any, b: any, orderBy: string) {
     return 0;
 }
 
-
-type DataType = CustomerType[] | AgentType[] | PrintJobsType[] | FeedbackType[];
+type DataType = PrintType[] | InstitutionType[] | InstitutionUsersType[];
 
 type AdvanceTable = {
-    DATALIST: DataType
-    DataType: TableDataType
-}
+    DATALIST: DataType;
+    DataType: TableDataType;
+};
 export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
-
-    const { page,
+    const {
+        page,
         order,
         selected,
         orderBy,
@@ -60,7 +59,8 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
         setOrderBy,
         setFilterName,
         setRowsPerPage,
-        handleRequestSort } = useContext(SearchContext);
+        handleRequestSort
+    } = useContext(SearchContext);
 
     // const [page, setPage] = useState(0);
 
@@ -74,8 +74,6 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
 
     // const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
-
     // const handleRequestSort = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, property: string) => {
     //     const isAsc = orderBy === property && order === 'asc';
     //     setOrder(isAsc ? 'desc' : 'asc');
@@ -83,97 +81,103 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
     // };
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-
         if (event.target.checked) {
-
             switch (DataType) {
-                case 'CustomerType': {
-                    const newSelecteds = (DATALIST as CustomerType[]).map((n) => n.id);
+                case 'PrintType': {
+                    const newSelecteds = (DATALIST as PrintType[]).map((n) => n.objectId);
                     setSelected(newSelecteds as string[]);
                     return;
                 }
-                case 'AgentType': {
-
-                    const newSelecteds = (DATALIST as AgentType[]).map((n) => n.id);
+                case 'InstitutionType': {
+                    const newSelecteds = (DATALIST as InstitutionType[]).map((n) => n.objectId);
                     setSelected(newSelecteds as string[]);
                     return;
                 }
-                case 'PrintJobsType': {
-                    const newSelecteds = (DATALIST as PrintJobsType[]).map((n) => n.id);
-                    setSelected(newSelecteds as string[]);
-                    return;
-                }
-                case 'FeedbackType': {
-                    const newSelecteds = (DATALIST as FeedbackType[]).map((n) => n.id);
+                case 'InstitutionUsersType': {
+                    const newSelecteds = (DATALIST as InstitutionUsersType[]).map((n) => n.objectId);
                     setSelected(newSelecteds as string[]);
                     return;
                 }
             }
-
         }
         setSelected([]);
     };
 
     function SwitchTaleData() {
         switch (DataType) {
-            case 'CustomerType': {
-                const newFilterData = (filteredData as CustomerType[]);
+            case 'PrintType': {
+                const newFilterData = filteredData as PrintType[];
                 return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d, id) => {
-                    let userLocation = d.location;
+                    const selectedUser = selected.indexOf(d.objectId as string) !== -1;
 
-                    const selectedUser = selected.indexOf(d.id as string) !== -1;
-                    // full_Name
-                    // sex
-                    // phoneNumber
-                    // email
-                    // region
-                    // town
-                    // street_no
-                    // totalPlay
                     return (
                         <TableRow
                             hover
                             role="checkbox"
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            sx={{ 
+                                cursor:"pointer", 
+                                '&:last-child td, &:last-child th': { border: 0 } }}
                             aria-checked={selectedUser}
                             tabIndex={-1}
                             selected={selectedUser}
-                            key={d.id}>
+                            key={d.objectId}
+                        >
                             <TableCell padding="checkbox">
-                                <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, d.id as string)} />
+                                <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, d.objectId as string)} />
                             </TableCell>
                             <TableCell component="th" scope="row" padding="none">
                                 <Typography variant="subtitle2" noWrap>
-                                    {d.name}
+                                    {d.title}
                                 </Typography>
                             </TableCell>
 
-                            <TableCell align="left">{d.sex}</TableCell>
-                            <TableCell align="left">{d.phoneNumber}</TableCell>
-                            <TableCell align="left">{d.email}</TableCell>
-                            <TableCell align="left">{userLocation.region}</TableCell>
-                            <TableCell align="left">{userLocation.town}</TableCell>
+                            <TableCell
+                                align="left"
+                                sx={{
+                                    maxHeight: '3em',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                {d.instruction}
+                            </TableCell>
+                            <TableCell align="left">{d.printActivities}</TableCell>
+                            <TableCell align="left">{d.printColor}</TableCell>
 
-                            <TableCell align="left">{userLocation.streetNO + " " + userLocation.street}</TableCell>
-                            <TableCell align="left">{d.usePrintJobsTokenCount}</TableCell>
-
+                            <TableCell align="left">{d.printFileURL.length}</TableCell>
+                            <TableCell align="left">{d.quantity}</TableCell>
+                            <TableCell
+                                sx={{
+                                    maxHeight: '3em',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                }}
+                                align="left"
+                            >
+                                {JSON.stringify(d.printFileType)?.replace('[', '')?.replace(']', '')}
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    maxHeight: '3em',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                }}
+                                align="left"
+                            >
+                                {JSON.stringify(d.printFileSizes)?.replace('[', '')?.replace(']', '')}
+                            </TableCell>
                         </TableRow>
                     );
-                })
+                });
             }
-            case 'AgentType': {
+            case 'InstitutionType': {
+                const newFilterData = filteredData as InstitutionType[];
+                return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d) => {
+                    const selectedUser = selected.indexOf(d.objectId as string) !== -1;
 
-                const newFilterData = (filteredData as AgentType[]);
-                return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d, id) => {
-                    let userLocation = d.location;
-
-                    const selectedUser = selected.indexOf(d.id as string) !== -1;
-                    // full_Name
-                    // sex
-                    // phoneNumber
-                    // region
-                    // town
-                    // street_no
                     return (
                         <TableRow
                             hover
@@ -182,8 +186,9 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                             aria-checked={selectedUser}
                             tabIndex={-1}
                             selected={selectedUser}
-                            key={id}>
-                            <TableCell padding="checkbox">
+                            key={d.objectId}
+                        >
+                            {/* <TableCell padding="checkbox">
                                 <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, d.id as string)} />
                             </TableCell>
                             <TableCell component="th" scope="row" padding="none">
@@ -201,77 +206,43 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                             <TableCell align="left">{userLocation.region}</TableCell>
                             <TableCell align="left">{userLocation.town}</TableCell>
 
-                            <TableCell align="left">{userLocation.streetNO + " " + userLocation.street}</TableCell>
+                            <TableCell align="left">{userLocation.streetNO + " " + userLocation.street}</TableCell> */}
                         </TableRow>
                     );
-                })
+                });
             }
-            case 'PrintJobsType': {
-                const newFilterData = (filteredData as PrintJobsType[]);
-                return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d, id) => {
-
-                    const selectedUser = selected.indexOf(d.id as string) !== -1;
+            case 'InstitutionUsersType': {
+                const newFilterData = filteredData as InstitutionUsersType[];
+                return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d) => {
+                    const selectedUser = selected.indexOf(d.objectId as string) !== -1;
 
                     return (
                         <TableRow
-
                             hover
                             role="checkbox"
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             aria-checked={selectedUser}
                             tabIndex={-1}
                             selected={selectedUser}
-                            key={d.id}>
-                            <TableCell padding="checkbox">
+                            key={d.objectId}
+                        >
+                            {/* <TableCell padding="checkbox">
                                 <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, d.id as string)} />
                             </TableCell>
                             <TableCell component="th" scope="row" padding="none">
                                 <Stack direction="row" alignItems="center" spacing={2}>
-                                    {/* <Avatar alt={name} src={avatarUrl} /> */}
-                                    <Typography variant="subtitle2" noWrap>
+                                     <Typography variant="subtitle2" noWrap>
                                         {d.rafflePromoName}
                                     </Typography>
                                 </Stack>
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     );
-                })
-
-            }
-            case 'FeedbackType': {
-                const newFilterData = (filteredData as FeedbackType[]);
-                return newFilterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((d, id) => {
-                    const selectedUser = selected.indexOf(d.id as string) !== -1;
-
-                    return (
-                        <TableRow
-
-                            hover
-                            role="checkbox"
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            aria-checked={selectedUser}
-                            tabIndex={-1}
-                            selected={selectedUser}
-                            key={d.id}>
-                            <TableCell component="th" scope="row" padding="none">
-                                <Stack direction="row" alignItems="center" spacing={2}>
-                                    {/* <Avatar alt={name} src={avatarUrl} /> */}
-                                    <Typography variant="subtitle2" noWrap>
-                                        {d.title}
-                                    </Typography>
-                                </Stack>
-                            </TableCell>
-
-                            <TableCell align="left"> {d.attachedType}</TableCell>
-
-                        </TableRow>
-                    );
-                })
+                });
             }
             default:
                 return <TableRow></TableRow>;
         }
-
     }
 
     const handleClick = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
@@ -299,17 +270,13 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-
-
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - DATALIST.length) : 0;
 
     const filteredData = applySortFilter(DATALIST, getComparator(order, orderBy), filterName);
 
     const isNotFound = !filteredData.length && !!filterName;
 
-
-
-    function applySortFilter(array: DataType, comparator: (order: "asc" | "desc", orderBy: string) => void, query: string) {
+    function applySortFilter(array: DataType, comparator: (order: 'asc' | 'desc', orderBy: string) => void, query: string) {
         const stabilizedThis = array.map((el, index) => [el, index]);
         //    @ts-ignore
         stabilizedThis.sort((a, b) => {
@@ -322,31 +289,25 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
         });
 
         if (query) {
-
             switch (DataType) {
-                case 'CustomerType': {
-                    let _array = array as CustomerType[];
+                case 'PrintType': {
+                    let _array = array as PrintType[];
+                    return filter(_array, (_user) => _user.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+                }
+                case 'InstitutionType': {
+                    let _array = array as InstitutionType[];
                     return filter(_array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
                 }
-                case 'AgentType': {
-                    let _array = array as AgentType[];
-                    return filter(_array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-                }
-                case 'PrintJobsType': {
-                    let _array = array as PrintJobsType[];
-                    return filter(_array, (_ref) => _ref.rafflePromoName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-                }
-                case 'FeedbackType': {
-                    let _array = array as FeedbackType[];
-                    return filter(_array, (_feedback) => _feedback.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+                case 'InstitutionUsersType': {
+                    let _array = array as InstitutionUsersType[];
+                    return filter(_array, (_ref) => _ref.phoneNumber.toLowerCase().indexOf(query.toLowerCase()) !== -1);
                 }
             }
-
         }
         return stabilizedThis.map((el) => el[0]);
     }
 
-    function getComparator(order: "asc" | "desc", orderBy: string) {
+    function getComparator(order: 'asc' | 'desc', orderBy: string) {
         return order === 'desc'
             ? (a: any, b: any) => descendingComparator(a, b, orderBy)
             : (a: any, b: any) => -descendingComparator(a, b, orderBy);
@@ -354,66 +315,42 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
 
     function createHeader(): TaleHeadLabelsType {
         switch (DataType) {
-            case 'CustomerType': {
-                // const newSelecteds = (DATALIST as CustomerType[])
-                // let arr = Object.keys(newSelecteds[0]).map((key) => {
-                //     return { id: key, label: key, alignRight: false } as TaleHeadLabelType;
-                // });
-                // arr.push({ id: '' })
-                // return arr;
-
-                return ([
-                    { id: 'full_Name', label: "Full Name", alignRight: false },
-                    { id: 'sex', label: "Sex", alignRight: false },
-                    { id: 'phoneNumber', label: "Phone Number", alignRight: false },
-                    { id: 'email', label: "Email", alignRight: false },
-                    { id: 'region', label: "Region", alignRight: false },
-                    { id: 'town', label: "Town", alignRight: false },
-                    { id: 'street_no.', label: "Street No.", alignRight: false },
-                    { id: 'totalPlay', label: "Total Plays", alignRight: false },
-                ]) as TaleHeadLabelsType
+            case 'PrintType': {
+                return [
+                    { id: 'title', label: 'Title', alignRight: false },
+                    { id: 'instruction', label: 'Instruction', alignRight: false },
+                    { id: 'printActivities', label: 'Activity', alignRight: false },
+                    { id: 'printColor', label: 'Color', alignRight: false },
+                    { id: 'files', label: 'No. Files', alignRight: false },
+                    { id: 'quantity', label: 'Quantity', alignRight: false },
+                    { id: 'filesType.', label: 'Files Type', alignRight: false },
+                    { id: 'filesSizes', label: 'Files Sizes', alignRight: false }
+                ] as TaleHeadLabelsType;
             }
-            case 'AgentType': {
-
-
-
-                return ([
-                    { id: 'full_Name', label: "Full name", alignRight: false },
-                    { id: 'sex', label: "Sex", alignRight: false },
-                    { id: 'phoneNumber', label: "Phone number", alignRight: false },
-                    { id: 'email', label: "Email", alignRight: false },
-                    { id: 'region', label: "Region", alignRight: false },
-                    { id: 'town', label: "Town", alignRight: false },
-                    { id: 'street_no.', label: "Street No.", alignRight: false },
-
-                ]) as TaleHeadLabelsType
+            case 'InstitutionType': {
+                return [
+                    { id: 'full_Name', label: 'Full name', alignRight: false },
+                    { id: 'sex', label: 'Sex', alignRight: false },
+                    { id: 'phoneNumber', label: 'Phone number', alignRight: false },
+                    { id: 'email', label: 'Email', alignRight: false },
+                    { id: 'region', label: 'Region', alignRight: false },
+                    { id: 'town', label: 'Town', alignRight: false },
+                    { id: 'street_no.', label: 'Street No.', alignRight: false }
+                ] as TaleHeadLabelsType;
             }
-            case 'PrintJobsType': {
-                const newSelecteds = (DATALIST as PrintJobsType[])
+            case 'InstitutionUsersType': {
+                const newSelecteds = DATALIST as InstitutionUsersType[];
                 let arr = Object.keys(newSelecteds[0]).map((key) => {
                     return { id: key, label: key, alignRight: false } as TaleHeadLabelType;
                 });
-                arr.push({ id: '' })
-                return arr;
-            }
-            case 'FeedbackType': {
-                const newSelecteds = (DATALIST as FeedbackType[])
-                let arr = Object.keys(newSelecteds[0]).map((key) => {
-                    return { id: key, label: key, alignRight: false } as TaleHeadLabelType;
-                });
-                arr.push({ id: '' })
+                arr.push({ id: '' });
                 return arr;
             }
         }
-
-
-
     }
 
     return (
         <Box>
-
-
             <TableContainer
                 sx={{
                     width: '100%',
@@ -429,7 +366,6 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                     sx={{
                         // '& .MuiTableCell-root:first-child': {
                         '& .MuiTableCell-root:first-of-type': {
-
                             pl: 2
                         },
                         '& .MuiTableCell-root:last-child': {
@@ -441,27 +377,27 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                         order={order}
                         orderBy={orderBy}
                         headLabel={createHeader()}
-                        // headLabel={TABLE_HEAD} 
+                        // headLabel={TABLE_HEAD}
                         rowCount={DATALIST.length}
                         numSelected={selected.length}
                         onRequestSort={handleRequestSort}
                         onSelectAllClick={handleSelectAllClick}
                     />
-                    <TableBody> {
-                        emptyRows > 0 ? (
+                    <TableBody>
+                        {' '}
+                        {emptyRows > 0 ? (
                             <TableRow style={{ height: 53 * emptyRows }}>
                                 <TableCell colSpan={6} />
                             </TableRow>
-                        ) :
+                        ) : (
                             SwitchTaleData()
-                    }
+                        )}
                     </TableBody>
 
                     {isNotFound && (
                         <TableBody>
                             <TableRow>
-                                <TableCell align="center" colSpan={DataType === "AgentType" ? 7 : 6}>
-
+                                <TableCell align="center" colSpan={DataType === 'PrintType' ? 7 : 6}>
                                     <Typography variant="h6" paragraph>
                                         Not found
                                     </Typography>
@@ -471,7 +407,6 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                                         <strong>&quot;{filterName}&quot;</strong>.
                                         <br /> Try checking for typos or using complete words.
                                     </Typography>
-
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -487,8 +422,7 @@ export default function AdvanceTable({ DATALIST, DataType }: AdvanceTable) {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-
             </TableContainer>
-        </Box >
+        </Box>
     );
 }

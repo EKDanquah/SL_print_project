@@ -20,11 +20,9 @@ import { Direction, useTheme } from '@mui/material/styles';
 
 // project import
 import ProfileTab from './ProfileTab';
-import SettingTab from './SettingTab';
 
 // assets
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import avatar1 from '../../../../../assets/images/users/avatar-1.png';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import Transitions from '../../../../../components/@extended/Transitions';
 import MainCard from '../../../../../components/MainCard';
 import { AuthContext } from '../../../../../context/auth/context';
@@ -188,7 +186,7 @@ const Profile = () => {
                                                             label="Profile"
                                                             {...a11yProps(0)}
                                                         />
-                                                        <Tab
+                                                        {/* <Tab
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'row',
@@ -199,15 +197,15 @@ const Profile = () => {
                                                             icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Setting"
                                                             {...a11yProps(1)}
-                                                        />
+                                                        /> */}
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>
                                                     <ProfileTab handleLogout={handleLogout} />
                                                 </TabPanel>
-                                                <TabPanel value={value} index={1} dir={theme.direction}>
+                                                {/* <TabPanel value={value} index={1} dir={theme.direction}>
                                                     <SettingTab />
-                                                </TabPanel>
+                                                </TabPanel> */}
                                             </>
                                         )}
                                     </MainCard>

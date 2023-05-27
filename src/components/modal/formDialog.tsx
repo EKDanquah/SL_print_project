@@ -66,7 +66,7 @@ export default function AlertDialogSlide(
 
                 <DialogActions>
                     <Button onClick={handleClose} >Cancel</Button>
-                    <Button form={formKey} type="submit" >Save</Button>
+                    <Button form={formKey} type="submit" >Submit</Button>
                 </DialogActions>
             </Dialog>
         </Box>

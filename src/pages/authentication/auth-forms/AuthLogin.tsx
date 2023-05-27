@@ -55,7 +55,7 @@ function AuthLogin() {
         <>
             <Formik
                 initialValues={{
-                    email: 'hackaton2022@zire.com',
+                    email: 'testadmin@zire.com',
                     password: '123456',
                     submit: null
                 }}
@@ -174,7 +174,7 @@ function AuthLogin() {
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <Divider>
                                     <Typography variant="caption"> Login with</Typography>
                                 </Divider>
@@ -185,7 +185,7 @@ function AuthLogin() {
                                         await loginWithGoogle(authContext, notificationContext, navigate)
                                     }}
                                 />
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </form>
                 )}

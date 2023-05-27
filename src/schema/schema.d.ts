@@ -1,73 +1,61 @@
-import { Timestamp } from "firebase/firestore/lite"
 
 export type entityType = {
-    created_at: Timestamp
-    deleted_at?: Timestamp,
-    id?: string,
+    created_at?: Date;
+    deleted_at?: Date;
+    objectId?: string;
+};
+
+export type PrintOption = {
+    isColored: boolean;
+};
+
+export type PrintActivities = 'SEEN' | 'PRINTED' | 'DENSED'|'SEND';
+ 
+export type PrintType = entityType & {
+    title: string;
+    instruction?: string;
+    printFileURL: string[];
+    printFileSizes: string[];
+    quantity: string;
+    printFileType: PrintFileType[];
+    printActivities: PrintActivities;
+    printColor:PrintColor;
+    fromInstitutionId?: string;
+    fromInstitutionDepartmentId?: string;
+    deadLine?: Date;
+};
+
+export type PrintFileType = 'png' | 'pdf' | 'jpg' | 'jpeg' | 'others' | 'docx' | 'slsx';
+export type PrintColor = 'black and white' | 'coloured';
+
+export type InstitutionType = entityType & {
+    photoUrl: string;
+    email: string;
+    name: string;
+    phoneNumber: string;
+    isApproved: boolean;
+    // users?: string[];
+};
+
+export type InstitutionUsersType = entityType & {
+    email: string;
+    fname: string;
+    lname: string;
+    phoneNumber: string;
+    isVerified: boolean;
+    departmentID?:string
+    institutionId?:string
+};
+
+export type InstitutionDepartmentType = entityType & {
+    title:string,
+    institutionID:string
 }
+  
 
-export type LocationType = {
-    region: RegionType,
-    town: string,
-    street: string,
-    streetNO: number
+export type NotificationType=entityType & {
+  title:string,
+  info:string,
+  isSeen:boolean,
+   
 }
-export type AgentType = {
-    email: string,
-    name: string,
-    phoneNumber: string,
-    location: LocationType,
-    sex: string
-} & entityType
-
-export type CustomerType = {
-    email: string,
-    name: string,
-    phoneNumber: string,
-    location: LocationType,
-    activePrintJobsToken: string[]
-    usePrintJobsTokenCount: number,
-    sex: string
-} & entityType
-
-export type PrintJobsTokenType = {
-    statue: PrintJobsStatusType
-    assignedTo: string
-} & entityType
-
-export type PrintJobsType = {
-    raffles: PrintJobsItemType[],
-    endDate?: string,
-    startDate: string,
-    rafflePromoName: string,
-    minimumEligiblePrintJobsCount: number,
-} & entityType;
-
-export type PrintJobsItemType = {
-    imageUrl: string,
-    name: string,
-    details?: string,
-
-} & entityType;
-
-export type PrintJobsStatusType = "active" | "inactive" | "used";
-
-export type FeedbackType = {
-    issue: string
-    title: string
-    attached: any
-    attachedType: FeedbackAttachedType
-} & entityType
-
-export type RegionType = "Eastern Province" |
-    "Northern Province" |
-    "Southern Province" |
-    "North West Province"
-
-
-
-export type ConsumerInsightType = "ISSUE" | "OPINION";
-
-export type SexType = "MALE" | "FEMALE";
-
-export type FeedbackAttachedType = "image" | "print-jobs";

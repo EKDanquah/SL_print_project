@@ -100,6 +100,8 @@ function AuthContextProvider(props: AuthContextProp) {
             setAuthErrorToState: setAuthErrorToState,
             user: state.user,
             isUserLoggedIn: isUserLoggedIn,
+            role:"USER"
+            // "ADMIN"
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [state.authError, state.user])}>

@@ -1,1 +1,2 @@
-export type TableDataType = 'CustomerType' | 'AgentType' | 'PrintJobsType' | 'FeedbackType';
+export type TableDataType = 'PrintType' | 'InstitutionType' | 'InstitutionUsersType';
+// | 'PrintJobsType' | 'FeedbackType';

@@ -20,7 +20,8 @@ type StsTokenManagerType = {
     expirationTime: number,
 }
 
-export type FirebaseLocalUserType = {
+
+export type FirebaseLocalUserType = { 
     uid: string,
     email: string,
     emailVerified: boolean,
@@ -29,12 +30,15 @@ export type FirebaseLocalUserType = {
     photoURL: string,
     providerData: ProviderDataType,
     stsTokenManager: StsTokenManagerType,
-    createdAt: string,
-    lastLoginAt: string,
-    apiKey: string,
-    appName: string
+    
+    // createdAt: string,
+    // lastLoginAt: string,
+    // apiKey: string,
+    // appName: string,
 }
-export type AuthProviderType = "EMAIL_PASSWORD" | "FACEBOOK" | "GMAIL"
-export type AuthRouterStateType = { email: string, provider: AuthProviderType, availableProvider: AuthProviderType }
+
+
+// export type AuthProviderType = "EMAIL_PASSWORD" | "FACEBOOK" | "GMAIL";
+// export type AuthRouterStateType = { email: string, provider: AuthProviderType, availableProvider: AuthProviderType }
 
 export type FirebaseUserType = User

@@ -271,7 +271,7 @@ const AuthRegister = () => {
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <Divider>
                                     <Typography variant="caption">Sign up with</Typography>
                                 </Divider>
@@ -282,7 +282,7 @@ const AuthRegister = () => {
                                         await loginWithGoogle(authContext, notificationContext, navigate)
                                     }}
                                 />
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </form>
                 )}

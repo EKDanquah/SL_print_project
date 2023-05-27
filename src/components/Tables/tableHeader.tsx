@@ -50,7 +50,7 @@ export default function TableHeader({
                         onChange={onSelectAllClick}
                     />
                 </TableCell>
-                {headLabel.map((headCell) => (
+                {headLabel?.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.alignRight ? 'right' : 'left'}

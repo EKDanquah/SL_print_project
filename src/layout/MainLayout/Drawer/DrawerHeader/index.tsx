@@ -19,7 +19,7 @@ const DrawerHeader = ({ open }: DrawerHeaderPropTypes) => {
             <Stack direction="row" spacing={1} alignItems="center">
                 <Logo />
                 <Chip
-                    label={"SLBL"}
+                    label={"EGPD"}
                     // label={process.env.REACT_APP_VERSION}
                     size="small"
                     sx={{ height: 16, '& .MuiChip-label': { fontSize: '0.625rem', py: 0.25 } }}

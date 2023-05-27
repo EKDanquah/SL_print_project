@@ -18,7 +18,7 @@
       "allowJs": true
   
     },
-    "include": ["src"],
+    "include": ["src", "firebase", "firebase"],
     "references": [{ "path": "./tsconfig.node.json" }]
   }
   

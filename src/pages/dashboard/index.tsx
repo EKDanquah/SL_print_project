@@ -290,7 +290,7 @@ const DashboardDefault = () => {
                             size="small"
                             variant="contained"
                             LinkComponent={Link}
-                            to="/pending-admin"
+                            to="/institutions"
                             sx={{ textTransform: 'capitalize' }}
                         >
                             View All

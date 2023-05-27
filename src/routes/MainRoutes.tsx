@@ -4,11 +4,12 @@ import { lazy } from 'react';
 import Loadable from '../components/Loadable';
 import MainLayout from '../layout/MainLayout';
 
-
 // render - dashboard
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('../pages/extra-pages/SamplePage')));
+const InstitutionDetails = Loadable(lazy(() => import('../pages/institution-details')));
+const InstitutionDepartmentDetails = Loadable(lazy(() => import('../pages/institution-department-details')));
 
 // render - utilities
 const TablesPage = Loadable(lazy(() => import('../pages/components-overview/Tables')));
@@ -26,12 +27,10 @@ const AgentPage = Loadable(lazy(() => import('../pages/agent')));
 const ConsumersPage = Loadable(lazy(() => import('../pages/consumers')));
 const CustomerInsightPage = Loadable(lazy(() => import('../pages/customerInsight')));
 
-
 const MainRoutes = {
     path: '/',
     element: <MainLayout />,
     children: [
-
         {
             path: 'color',
             element: <Color />
@@ -76,7 +75,8 @@ const MainRoutes = {
         {
             path: 'setting',
             element: <SettingPage />
-        }, {
+        },
+        {
             path: 'pushNotification',
             element: <NotificationPage />
         },
@@ -93,11 +93,76 @@ const MainRoutes = {
             element: <PrintJobsPage />
         },
         {
-            path: 'pending-admin',
-            element: <CustomerInsightPage />
-        },
-
+            path: 'institutions',
+            children: [
+                {
+                    path: '',
+                    element: <CustomerInsightPage />
+                },
+                {
+                    path: 'ministry', 
+                    // element:,
+                    children: [
+                        {
+                            path: '',
+                            paramKey: 'id',
+                            element:  <InstitutionDetails />
+                        },
+                        {
+                            path: 'departments',
+                            paramKey: ['id','insId'], 
+                            element: <InstitutionDepartmentDetails/>
+                        }
+                    ]
+                }
+            ]
+        }
     ]
 };
 
-export default MainRoutes;
+const UsersRoutes = {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+        {
+            path: '/user',
+            element: <DashboardDefault />
+        },
+        {
+            path: 'dashboard',
+            children: [
+                {
+                    path: 'default',
+                    element: <DashboardDefault />
+                }
+            ]
+        },
+        {
+            path: 'uploads',
+            element: <SettingPage />
+        },
+        {
+            path: 'pushNotification',
+            element: <NotificationPage />
+        },
+        {
+            path: 'agents',
+            element: <AgentPage />
+        },
+
+        {
+            path: 'consumers',
+            element: <ConsumersPage />
+        },
+        {
+            path: 'print-jobs',
+            element: <PrintJobsPage />
+        },
+        // {
+        //     path: 'institutions',
+        //     element: <CustomerInsightPage />
+        // }
+    ]
+};
+
+export { MainRoutes, UsersRoutes };

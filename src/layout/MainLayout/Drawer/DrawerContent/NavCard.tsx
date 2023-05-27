@@ -15,9 +15,9 @@ const NavCard = () => (
             <CardMedia component="img" image={avatar} sx={{ width: 112 }} />
 
             <Stack alignItems="center">
-                <Typography variant="h5">SL Brewery LTD.</Typography>
+                <Typography variant="h5">SL. Printing Department</Typography>
                 <Typography variant="h6" color="secondary">
-                    Drink Responsibly
+                    Let's Print
                 </Typography>
             </Stack>
         </Stack>

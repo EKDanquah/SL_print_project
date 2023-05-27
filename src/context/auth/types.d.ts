@@ -17,4 +17,5 @@ export type AuthContextType = {
     setAuthErrorToState: (authError: string) => void,
     user?: User | FirebaseLocalUserType,
     isUserLoggedIn: () => boolean
+    role: string
 }

@@ -8,5 +8,7 @@ export const AuthContext = React.createContext<AuthContextType>({
     authError: undefined,
     setAuthErrorToState: (authError: string) => {},
     user: undefined,
-    isUserLoggedIn: () => false
+    isUserLoggedIn: () => false,
+    role:"USER"
+    // "ADMIN"
 });

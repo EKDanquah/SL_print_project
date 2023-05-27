@@ -6,7 +6,7 @@ import { NavigateFunction } from "react-router-dom";
 import { AuthContextType } from "../../context/auth/types";
 import { NotificationContextType } from "../../context/notification/types";
 import { AuthUserType, FirebaseLocalUserType } from "../../types/auth.type";
-import { auth } from "../firebase/index";
+import { auth } from "./index";
 
 const LOCAL_USER_ID = "firebase_user";
 
@@ -71,8 +71,8 @@ export async function loginWithFacebook(authContext?: AuthContextType, notificat
             // const email = error.customData.email;
             // // The AuthCredential type that was used.
             // const credential = FacebookAuthProvider.credentialFromError(error);
-
             // resolveAccountExistsWithDifferentCredential(error, email);
+
             const email = error.customData?.email;
             const errorCode = error.code;
             const duplicateAccount = errorCode === "auth/account-exists-with-different-credential";
@@ -92,7 +92,6 @@ export async function loginWithFacebook(authContext?: AuthContextType, notificat
             })
         });
 }
-
 /**
  * 
  * @param { email, password, authContext} 
@@ -239,7 +238,6 @@ export function onAuthStateChange(loadUserToState?: (user?: User) => void, navig
     });
 }
 
-
 function duplicateAccountLinking(email: string, provider: string, navigate?: NavigateFunction) {
 
     fetchSignInMethodsForEmail(auth, email)
@@ -264,7 +262,6 @@ function saveUserToLocalStorage(user?: User) {
     }
 }
 
-
 export function getUserFromLocalStorage(): FirebaseLocalUserType | undefined {
     let userString = localStorage.getItem(LOCAL_USER_ID) as string;
     if (userString?.length > 0) {
@@ -273,8 +270,6 @@ export function getUserFromLocalStorage(): FirebaseLocalUserType | undefined {
     }
     return undefined;
 }
-
-
 
 export function linkFaceBookAccount(authContext?: AuthContextType, notificationContext?: NotificationContextType, navigate?: NavigateFunction) {
     const provider = new FacebookAuthProvider();

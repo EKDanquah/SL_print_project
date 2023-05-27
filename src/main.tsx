@@ -27,13 +27,13 @@ root.render(
             <BrowserRouter
                 basename='/'
             >
-                <AuthContextProvider>
+               
                     <NotificationContextProvider>
                         <AppBarContextProvider>
                             <App />
                         </AppBarContextProvider>
                     </NotificationContextProvider>
-                </AuthContextProvider>
+                
             </BrowserRouter>
         </QueryClientProvider>
     </StrictMode>
